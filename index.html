@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>NexDigital IA</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a855f7'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: { purpleBrand: { 400: '#c084fc', 500: '#a855f7', 600: '#9333ea', 700: '#7e22ce' } }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes gradientBG { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    .animated-bg { background:linear-gradient(-45deg,#030305,#080410,#020204,#0e0419); background-size:400% 400%; animation:gradientBG 18s ease infinite; }
+    @keyframes dotBounce { 0%,80%,100%{transform:scale(0);opacity:.3} 40%{transform:scale(1);opacity:1} }
+    .dot-1{animation:dotBounce 1.4s infinite ease-in-out both;animation-delay:-.32s}
+    .dot-2{animation:dotBounce 1.4s infinite ease-in-out both;animation-delay:-.16s}
+    .dot-3{animation:dotBounce 1.4s infinite ease-in-out both}
+    @keyframes shimmerCard{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    .image-loading-card{background:linear-gradient(135deg,#181124,#0f0b18,#221235,#0b0712);background-size:300% 300%;animation:shimmerCard 5s ease infinite}
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:#1c1c24;border-radius:9999px}
+    ::-webkit-scrollbar-thumb:hover{background:#2a2a38}
+    .btn-gradient{background:linear-gradient(135deg,#a855f7 0%,#d946ef 100%)}
+    .btn-gradient:hover{background:linear-gradient(135deg,#9333ea 0%,#c026d3 100%)}
+
+    /* Prose estilo Grok/Gemini — seções bem separadas + bullets visíveis */
+    .prose{font-size:.875rem;line-height:1.6}
+    .prose p{margin:0 0 .75rem 0;line-height:1.6}
+    .prose p:last-child{margin-bottom:0}
+    .prose ul{margin:.5rem 0 .85rem 0;padding-left:1.35rem;list-style-type:disc;list-style-position:outside}
+    .prose ol{margin:.5rem 0 .85rem 0;padding-left:1.35rem;list-style-type:decimal;list-style-position:outside}
+    .prose li{margin-bottom:.4rem;line-height:1.55;display:list-item}
+    .prose li::marker{color:#c084fc}
+    .prose li + li{margin-top:.1rem}
+    .prose h1,.prose h2,.prose h3{color:#f3e8ff;font-weight:700;margin:1.15rem 0 .5rem 0;line-height:1.35}
+    .prose h1:first-child,.prose h2:first-child,.prose h3:first-child{margin-top:0}
+    .prose pre{margin:.7rem 0}
+    .prose code{font-size:.8rem}
+    .prose strong{color:#e9d5ff;font-weight:600}
+    .prose hr{border-color:rgba(255,255,255,.08);margin:1rem 0}
+
+    /* Code block — header sticky BEM no topo (sem vão) */
+    .code-block-wrapper{position:relative;margin:.75rem 0;border-radius:.7rem;border:1px solid rgba(255,255,255,.09);background:#0b0b10}
+    .code-header{
+      position:sticky;top:-2px;z-index:50;
+      display:flex;justify-content:flex-end;align-items:center;gap:.28rem;
+      padding:.15rem .4rem;
+      margin:0;
+      background:rgba(8,8,12,.99);
+      backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      border-radius:.7rem .7rem 0 0;
+      box-shadow:0 4px 14px rgba(0,0,0,.5);
+    }
+    .code-block-wrapper pre{
+      background:transparent!important;border:none!important;
+      border-radius:0 0 .7rem .7rem!important;
+      padding:.35rem 1rem 1rem 1rem!important;margin:0!important;overflow-x:auto;
+    }
+    code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace!important;font-size:.8rem!important}
+    .code-btn{
+      background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);color:#c4c4c8;
+      padding:.22rem .48rem;font-size:.68rem;border-radius:.32rem;cursor:pointer;transition:all .15s;
+      display:flex;align-items:center;gap:.22rem;white-space:nowrap;
+    }
+    .code-btn:hover{background:rgba(255,255,255,.18);color:#fff}
+
+    table{width:100%;margin:.7rem 0;border-collapse:collapse;font-size:.8rem}
+    th,td{border:1px solid rgba(255,255,255,.08);padding:.5rem .7rem;text-align:left}
+    th{background:rgba(168,85,247,.12);color:#c084fc;font-weight:600}
+    tr:nth-child(even){background:rgba(255,255,255,.015)}
+
+    .msg-content-wrapper{position:relative}
+    .msg-content-collapsed{
+      max-height:6.5rem;overflow:hidden;
+      mask-image:linear-gradient(to bottom,black 40%,transparent 100%);
+      -webkit-mask-image:linear-gradient(to bottom,black 40%,transparent 100%);
+    }
+    /* Botão Ver mais/menos ABAIXO do texto, alinhado à direita — não sobrepõe */
+    .msg-expand-btn{
+      display:inline-flex;align-items:center;justify-content:flex-end;gap:.25rem;
+      margin-top:.4rem;margin-left:auto;
+      background:transparent;border:none;
+      color:#c084fc;font-size:.7rem;padding:.15rem .1rem;cursor:pointer;
+      font-weight:500;
+    }
+    .msg-expand-btn:hover{color:#e9d5ff}
+
+    .long-paste-chip{
+      display:inline-flex;align-items:center;gap:.35rem;background:#101018;
+      border:1px solid rgba(168,85,247,.3);border-radius:.45rem;padding:.28rem .5rem;
+      cursor:pointer;transition:all .15s;font-size:.7rem;max-width:150px;
+    }
+    .long-paste-chip:hover{border-color:#a855f7;background:#14141e}
+
+    /* User bubble — compacta, avatar maior, alinhada */
+    .user-bubble{
+      display:inline-block;max-width:85%;background:#14141d;
+      border:1px solid rgba(168,85,247,.28);border-radius:1.05rem;
+      padding:.55rem .95rem;box-shadow:0 1px 5px rgba(0,0,0,.2);
+    }
+    .user-bubble .user-meta{
+      display:flex;align-items:center;justify-content:flex-end;gap:.5rem;margin-bottom:.4rem;
+    }
+    .user-bubble .user-name{
+      font-weight:600;font-size:.82rem;color:#c084fc;line-height:1.2;
+    }
+    .user-bubble .user-avatar{
+      width:1.75rem;height:1.75rem;border-radius:.5rem;
+      background:#9333ea;color:#fff;display:flex;align-items:center;justify-content:center;
+      font-size:.75rem;flex-shrink:0;box-shadow:0 0 0 1px rgba(168,85,247,.35);
+    }
+    .user-bubble .msg-content-wrapper{display:flex;flex-direction:column;align-items:flex-end}
+    .user-bubble .prose{text-align:right;width:100%}
+    .user-bubble .prose p{margin:0;line-height:1.5;text-align:right}
+    .user-bubble .prose p + p{margin-top:.35rem}
+
+    /* Assistant bubble */
+    .assistant-bubble{
+      display:inline-flex;gap:.7rem;padding:.6rem .9rem;border-radius:1.05rem;
+      background:#08080c;border:1px solid rgba(255,255,255,.06);
+      box-shadow:0 1px 6px rgba(0,0,0,.22);
+      width:fit-content;max-width:min(48rem,100%);
+    }
+    .assistant-bubble .content-col{min-width:0;flex:1}
+    .assistant-bubble .ai-avatar{
+      width:1.85rem;height:1.85rem;border-radius:.5rem;flex-shrink:0;margin-top:.1rem;
+    }
+  
+    select#modelSelect{background-color:#09090b;color:#e4e4e7}
+    select#modelSelect option{background-color:#09090b;color:#e4e4e7}
+
+    /* ===== RESPONSIVO TOTAL ===== */
+    html, body {
+      height: 100%;
+      height: 100dvh;
+      overscroll-behavior: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #appContainer {
+      height: 100%;
+      height: 100dvh;
+      max-height: 100dvh;
+    }
+    /* Safe area (notch / home indicator) */
+    .safe-bottom {
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
+    .safe-top {
+      padding-top: max(0.25rem, env(safe-area-inset-top));
+    }
+    /* Inputs: evita zoom automático no iOS (font >= 16px) */
+    #userInput, input, textarea, select {
+      font-size: 16px !important;
+    }
+    @media (min-width: 768px) {
+      #userInput { font-size: 0.875rem !important; }
+      select#modelSelect { font-size: 0.75rem !important; }
+    }
+    /* Sidebar mobile overlay */
+    #sidebarBackdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 35;
+      backdrop-filter: blur(2px);
+    }
+    #sidebarBackdrop.show { display: block; }
+    #sidebar.mobile-open {
+      display: flex !important;
+      position: fixed !important;
+      inset: 0 auto 0 0;
+      width: min(18rem, 85vw) !important;
+      z-index: 40;
+      height: 100%;
+      height: 100dvh;
+      box-shadow: 8px 0 30px rgba(0,0,0,0.5);
+      animation: slideInLeft 0.2s ease;
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    /* Touch targets mínimos */
+    @media (max-width: 767px) {
+      #sendBtn, button[onclick*="toggleAttach"], button[onclick*="toggleMobile"] {
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .code-btn {
+        padding: 0.4rem 0.65rem !important;
+        font-size: 0.75rem !important;
+        min-height: 36px;
+      }
+      .user-bubble, .assistant-bubble {
+        max-width: 100% !important;
+      }
+      .assistant-bubble {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      #chatBox {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+      }
+      /* Header compacto no mobile */
+      header .text-\[10px\], header .text-xs {
+        font-size: 0.65rem;
+      }
+      select#modelSelect {
+        max-width: 9.5rem;
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.5rem;
+      }
+      /* Modal imagem full */
+      #imageModal .max-w-3xl, #imageModal img {
+        max-width: 95vw !important;
+        max-height: 70vh !important;
+      }
+      /* Code block não estoura */
+      .code-block-wrapper {
+        max-width: 100%;
+        overflow: hidden;
+      }
+      .code-block-wrapper pre {
+        font-size: 0.72rem !important;
+        -webkit-overflow-scrolling: touch;
+      }
+      /* Chips e previews */
+      .long-paste-chip {
+        max-width: 120px;
+        font-size: 0.65rem;
+      }
+      /* Auth cards */
+      #authScreen .max-w-md {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+    }
+    /* Tablet */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .user-bubble { max-width: 80% !important; }
+      .assistant-bubble { max-width: 95% !important; }
+    }
+    /* Landscape phone */
+    @media (max-height: 500px) and (orientation: landscape) {
+      #chatBox { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+    }
+
+  </style>
+</head>
+<body class="animated-bg text-zinc-100 font-sans h-screen flex flex-col overflow-hidden antialiased selection:bg-purpleBrand-500/30">
+
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <div id="imageModal" class="fixed inset-0 z-50 bg-black/95 backdrop-blur-md hidden flex flex-col items-center justify-center p-4" onclick="if(event.target===this)closeImageModal()">
+    <button onclick="closeImageModal()" class="absolute top-5 right-5 text-zinc-400 hover:text-white bg-zinc-800/80 hover:bg-red-600 w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-xl z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <img id="modalImage" src="" alt="Zoom" class="max-w-full max-h-[75vh] rounded-2xl object-contain shadow-2xl border border-zinc-800 mb-5" onclick="event.stopPropagation()">
+    <div class="flex items-center gap-3" onclick="event.stopPropagation()">
+      <button id="modalDownloadBtn" class="px-5 py-2.5 rounded-xl text-xs font-semibold btn-gradient text-white shadow-lg shadow-purpleBrand-500/30 transition-all flex items-center gap-2"><i class="fa-solid fa-download"></i> Salvar imagem como...</button>
+      <button id="modalCopyBtn" class="px-5 py-2.5 rounded-xl text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-all flex items-center gap-2 border border-zinc-700/50"><i class="fa-regular fa-copy"></i> <span id="modalCopyBtnText">Copiar imagem</span></button>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#0f0f15] border border-zinc-800 p-6 rounded-2xl max-w-sm w-full shadow-2xl">
+      <h3 id="confirmTitle" class="font-bold text-base text-zinc-100 mb-2">Confirmar Ação</h3>
+      <p id="confirmDesc" class="text-xs text-zinc-400 mb-6">Tem certeza?</p>
+      <div class="flex gap-3 justify-end">
+        <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-xl text-xs bg-zinc-800 text-zinc-300 hover:bg-zinc-700 transition-all">Cancelar</button>
+        <button id="confirmYesBtn" class="px-4 py-2 rounded-xl text-xs btn-gradient text-white font-medium">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="longTextModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4" onclick="if(event.target===this)closeLongTextModal()">
+    <div class="bg-[#0c0c12] border border-zinc-800 rounded-2xl max-w-2xl w-full max-h-[80vh] flex flex-col shadow-2xl" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
+        <div class="flex items-center gap-2.5"><i class="fa-solid fa-file-lines text-purpleBrand-400"></i><span id="longTextModalTitle" class="text-sm font-semibold text-zinc-100">arquivo.txt</span></div>
+        <button onclick="closeLongTextModal()" class="text-zinc-500 hover:text-white w-8 h-8 rounded-lg flex items-center justify-center hover:bg-zinc-800"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="longTextModalContent" class="flex-1 overflow-y-auto p-5 text-xs text-zinc-300 font-mono leading-relaxed whitespace-pre-wrap"></div>
+    </div>
+  </div>
+
+  <div id="authScreen" class="fixed inset-0 z-40 animated-bg flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-2xl"></div>
+    <div class="relative bg-[#08080c]/90 border border-zinc-800/80 rounded-3xl p-8 max-w-md w-full shadow-2xl shadow-purpleBrand-500/20 backdrop-blur-xl">
+      <div class="flex flex-col items-center text-center mb-6">
+        <div class="w-16 h-16 rounded-2xl btn-gradient flex items-center justify-center text-white p-4 mb-3 shadow-xl shadow-purpleBrand-500/40"><svg class="w-full h-full fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h2 class="font-bold text-xl text-zinc-100 tracking-wide">NexDigital IA</h2>
+        <p class="text-xs text-zinc-400 mt-1">Sua plataforma inteligente de alta performance</p>
+      </div>
+      <div class="flex bg-zinc-900/90 p-1.5 rounded-2xl mb-6 border border-zinc-800/60">
+        <button onclick="switchAuthTab('login')" id="tabLoginBtn" class="flex-1 py-2.5 text-xs font-semibold rounded-xl bg-purpleBrand-600 text-white shadow-md shadow-purpleBrand-600/30 transition-all">Entrar</button>
+        <button onclick="switchAuthTab('register')" id="tabRegisterBtn" class="flex-1 py-2.5 text-xs font-semibold rounded-xl text-zinc-400 hover:text-zinc-200 transition-all">Cadastrar</button>
+      </div>
+      <div class="space-y-4">
+        <div><label class="block text-[11px] font-medium text-zinc-400 mb-1.5">Nome de Usuário</label><input type="text" id="authUsername" placeholder="Insira seu Usuário" class="w-full bg-[#121218] border border-zinc-800/80 rounded-xl px-4 py-3 text-xs text-zinc-100 focus:outline-none focus:border-purpleBrand-500 transition-all placeholder:text-zinc-600"></div>
+        <div><label class="block text-[11px] font-medium text-zinc-400 mb-1.5">Senha</label><div class="relative"><input type="password" id="authPassword" placeholder="Insira sua senha" class="w-full bg-[#121218] border border-zinc-800/80 rounded-xl px-4 py-3 pr-11 text-xs text-zinc-100 focus:outline-none focus:border-purpleBrand-500 transition-all placeholder:text-zinc-600"><button type="button" onclick="togglePasswordVisibility('authPassword','eyeIcon1')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white hover:text-purpleBrand-400 transition-colors p-1"><i id="eyeIcon1" class="fa-solid fa-eye text-sm"></i></button></div></div>
+        <div id="confirmPasswordContainer" class="hidden"><label class="block text-[11px] font-medium text-zinc-400 mb-1.5">Confirme a Senha</label><div class="relative"><input type="password" id="authConfirmPassword" placeholder="Confirme sua senha" class="w-full bg-[#121218] border border-zinc-800/80 rounded-xl px-4 py-3 pr-11 text-xs text-zinc-100 focus:outline-none focus:border-purpleBrand-500 transition-all placeholder:text-zinc-600"><button type="button" onclick="togglePasswordVisibility('authConfirmPassword','eyeIcon2')" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-white hover:text-purpleBrand-400 transition-colors p-1"><i id="eyeIcon2" class="fa-solid fa-eye text-sm"></i></button></div></div>
+        <div class="flex items-center gap-2.5 pt-1"><input type="checkbox" id="rememberMe" class="w-4 h-4 rounded bg-zinc-900 border-zinc-800 text-purpleBrand-600 focus:ring-purpleBrand-500 cursor-pointer"><label for="rememberMe" class="text-xs text-zinc-400 cursor-pointer select-none">Manter conta conectada</label></div>
+        <button onclick="handleAuthSubmit()" id="authSubmitBtn" class="w-full btn-gradient text-white font-semibold text-xs py-3.5 rounded-xl shadow-lg shadow-purpleBrand-500/30 transition-all active:scale-95 mt-3">Entrar na Conta</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="appContainer" class="flex-1 flex overflow-hidden hidden">
+    <div id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+    <aside id="sidebar" class="w-72 border-r border-zinc-800/30 bg-[#060608]/90 backdrop-blur-md p-4 hidden md:flex flex-col justify-between flex-shrink-0 z-30">
+      <div class="flex flex-col gap-5">
+        <div class="flex items-center justify-between md:hidden mb-1">
+          <span class="text-sm font-semibold text-zinc-200">Menu</span>
+          <button onclick="closeMobileSidebar()" class="w-10 h-10 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center" aria-label="Fechar menu"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <button onclick="newChat()" class="btn-gradient text-white font-semibold text-xs py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-purpleBrand-500/20 transition-all active:scale-95"><i class="fa-solid fa-plus text-xs"></i> Nova conversa</button>
+        <div><p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest px-1 mb-2">Histórico</p><div id="historyList" class="flex flex-col gap-1 max-h-[calc(100vh-210px)] overflow-y-auto pr-1"></div></div>
+      </div>
+      <div class="pt-3 border-t border-zinc-900/80 flex items-center justify-between text-zinc-400 px-1">
+        <div class="flex items-center gap-2 truncate"><div class="w-7 h-7 rounded-full bg-purpleBrand-500/20 text-purpleBrand-400 flex items-center justify-center text-xs font-bold uppercase" id="userAvatarLetter">R</div><span class="text-xs font-medium truncate" id="currentUserDisplay">rafa</span></div>
+        <button onclick="confirmLogout()" class="text-zinc-500 hover:text-red-400 p-2 rounded-lg transition-all" title="Sair"><i class="fa-solid fa-arrow-right-from-bracket text-xs"></i></button>
+      </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-full relative bg-[#040406]/60 backdrop-blur-sm">
+      <header class="h-14 border-b border-zinc-800/30 px-4 md:px-6 flex justify-between items-center bg-[#040406]/80 backdrop-blur-md z-20">
+        <div class="flex items-center gap-3">
+          <button onclick="toggleMobileSidebar()" class="md:hidden text-zinc-400 hover:text-white p-1"><i class="fa-solid fa-bars text-lg"></i></button>
+          <div class="w-8 h-8 rounded-xl btn-gradient flex items-center justify-center text-white p-1.5 shadow-md shadow-purpleBrand-500/25"><svg class="w-full h-full fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <div><h1 class="font-bold text-xs md:text-sm text-zinc-100">NexDigital IA</h1><p class="text-[10px] text-zinc-500 hidden sm:block">Assistente de Desenvolvimento & Imagens</p></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <select id="modelSelect" class="bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs rounded-lg px-2.5 py-1.5 outline-none focus:border-purpleBrand-500 cursor-pointer appearance-none">
+            <option value="gemini-3.6-flash">NexDigital Flash</option>
+            <option value="gemini-3.7-flash">NexDigital Fast</option>
+            <option value="gemini-3.5-flash">NexDigital Lite</option>
+          </select>
+          <button onclick="openApiKeyModal()" class="h-9 px-2.5 sm:px-3 rounded-lg border border-zinc-800 bg-zinc-950 text-zinc-200 hover:text-purpleBrand-400 hover:border-purpleBrand-500/40 flex items-center justify-center gap-1.5 transition-all text-xs font-medium whitespace-nowrap" title="Ativar IA">
+            <span class="text-sm leading-none">🤖</span>
+            <span class="hidden sm:inline">Ativar IA</span>
+          </button>
+        </div>
+      </header>
+
+      <div id="chatBox" class="flex-1 overflow-y-auto px-3 md:px-5 pt-2 pb-3 md:pb-5 space-y-3 max-w-4xl w-full mx-auto">
+        <div id="welcomeScreen" class="h-full flex flex-col items-center justify-center text-center my-auto py-10">
+          <div class="w-14 h-14 rounded-2xl btn-gradient flex items-center justify-center text-white p-3.5 mb-4 shadow-xl shadow-purpleBrand-500/30"><svg class="w-full h-full fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h2 class="font-bold text-lg md:text-xl text-zinc-100">Bem-vindo ao NexDigital IA</h2>
+          <p class="text-xs text-zinc-400 max-w-md mt-1.5 leading-relaxed">Sua assistente inteligente de engenharia e criação visual avançada.<br>Escolha uma sugestão ou digite abaixo para começar.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-lg w-full mt-7">
+            <button onclick="quickPrompt('Crie uma imagem realista de um lindo cachorro peludo correndo feliz na beira do mar num pôr do sol cinematográfico')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">🎨 Criar Imagem: Cachorro na Praia</button>
+            <button onclick="quickPrompt('Crie um LocalScript de Roblox em Lua com UI bonita, botão de Fly e slider de velocidade, completo e funcional')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Script Roblox: Fly UI com Slider</button>
+            <button onclick="quickPrompt('Explique async/await em JavaScript com exemplos avançados')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Explique async/await em JavaScript</button>
+            <button onclick="quickPrompt('Como criar uma API REST completa e robusta em Python com Flask')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Como criar uma API REST em Python</button>
+          </div>
+        </div>
+      </div>
+
+      <footer class="p-3 md:p-4 bg-[#040406]/80 backdrop-blur-md border-t border-zinc-800/20 safe-bottom">
+        <div class="max-w-3xl mx-auto flex flex-col gap-1.5 relative">
+          <div id="attachMenu" class="absolute bottom-full left-0 mb-3 bg-[#101015] border border-zinc-800 rounded-2xl shadow-2xl p-2 hidden flex-col gap-1 z-30 w-48 backdrop-blur-md">
+            <button onclick="triggerFileSelect();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-zinc-800/70 transition-all text-left w-full"><i class="fa-solid fa-folder-open text-purpleBrand-400"></i> Anexar arquivos</button>
+            <button onclick="triggerCameraSelect();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-zinc-800/70 transition-all text-left w-full"><i class="fa-solid fa-camera text-purpleBrand-400"></i> Tirar foto</button>
+          </div>
+          <div id="longPasteContainer" class="flex flex-wrap gap-1.5 hidden"></div>
+          <div id="imagePreviewContainer" class="flex flex-wrap gap-2 hidden"></div>
+          <div class="relative flex items-center bg-[#0c0c10] border border-zinc-800/90 rounded-2xl px-2.5 py-1.5 focus-within:border-purpleBrand-500/60 shadow-xl transition-all">
+            <input type="file" id="fileInput" accept="image/*" multiple class="hidden" onchange="handleFileSelect(event)">
+            <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelect(event)">
+            <button onclick="toggleAttachMenu(event)" class="w-11 h-11 md:w-9 md:h-9 rounded-xl hover:bg-zinc-800/80 text-zinc-400 hover:text-zinc-200 flex items-center justify-center transition-all flex-shrink-0" title="Anexar"><i class="fa-solid fa-paperclip text-sm"></i></button>
+            <textarea id="userInput" rows="1" placeholder="Pergunte algo..." class="w-full bg-transparent px-2.5 text-zinc-100 placeholder-zinc-500 focus:outline-none resize-none max-h-28 md:max-h-32 leading-relaxed py-2.5"></textarea>
+            <button id="sendBtn" onclick="sendMessage()" class="w-11 h-11 md:w-9 md:h-9 rounded-xl btn-gradient text-white flex items-center justify-center transition-all flex-shrink-0 shadow-md shadow-purpleBrand-500/25 active:scale-95"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+          </div>
+          <p class="text-[10px] text-zinc-600 text-center">A IA pode cometer erros. Verifique informações importantes.</p>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    let GEMINI_API_KEY = localStorage.getItem("nex_gemini_key") || "";
+    function getGeminiKey() {
+      return (localStorage.getItem("nex_gemini_key") || GEMINI_API_KEY || "").trim();
+    }
+    function saveGeminiKey(k) {
+      k = (k || "").trim();
+      if (!k) { localStorage.removeItem("nex_gemini_key"); GEMINI_API_KEY = ""; return; }
+      localStorage.setItem("nex_gemini_key", k);
+      GEMINI_API_KEY = k;
+    }
+    const SYSTEM_PROMPT = `Você é a NexDigital IA, assistente sênior de programação (Roblox Lua, JS, Python, HTML/CSS).
+
+FORMATAÇÃO:
+- Use ## títulos, listas e **negrito**.
+- Código sempre em bloco \`\`\`lua (ou js/python) completo.
+
+CÓDIGO:
+- SEMPRE completo e funcional. Nunca corte nem use "...".
+- Roblox: LocalScript pronto, UI moderna (UICorner), tudo funcionando.
+- Comentários em PT-BR.`;
+
+    let authMode = 'login', currentUser = null, chatHistory = [], currentChatIndex = null;
+    let messages = [{ role: "system", content: SYSTEM_PROMPT }];
+    let selectedImages = [], pendingAction = null, lastImagePrompt = "", longPastes = [];
+
+    const authScreen = document.getElementById("authScreen");
+    const appContainer = document.getElementById("appContainer");
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
+    const modelSelect = document.getElementById("modelSelect");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const historyList = document.getElementById("historyList");
+    const attachMenu = document.getElementById("attachMenu");
+    const sidebar = document.getElementById("sidebar");
+    const longPasteContainer = document.getElementById("longPasteContainer");
+    const lightningSvg = `<svg class="w-full h-full fill-current" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`;
+
+    function switchAuthTab(mode) {
+      authMode = mode;
+      const tabLoginBtn = document.getElementById("tabLoginBtn");
+      const tabRegisterBtn = document.getElementById("tabRegisterBtn");
+      const confirmContainer = document.getElementById("confirmPasswordContainer");
+      const submitBtn = document.getElementById("authSubmitBtn");
+      if (mode === 'login') {
+        tabLoginBtn.className = "flex-1 py-2.5 text-xs font-semibold rounded-xl bg-purpleBrand-600 text-white shadow-md shadow-purpleBrand-600/30 transition-all";
+        tabRegisterBtn.className = "flex-1 py-2.5 text-xs font-semibold rounded-xl text-zinc-400 hover:text-zinc-200 transition-all";
+        confirmContainer.classList.add("hidden"); submitBtn.innerText = "Entrar na Conta";
+      } else {
+        tabRegisterBtn.className = "flex-1 py-2.5 text-xs font-semibold rounded-xl bg-purpleBrand-600 text-white shadow-md shadow-purpleBrand-600/30 transition-all";
+        tabLoginBtn.className = "flex-1 py-2.5 text-xs font-semibold rounded-xl text-zinc-400 hover:text-zinc-200 transition-all";
+        confirmContainer.classList.remove("hidden"); submitBtn.innerText = "Criar Conta";
+      }
+    }
+
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId), icon = document.getElementById(iconId);
+      if (input.type === "password") { input.type = "text"; icon.className = "fa-solid fa-eye-slash text-sm"; }
+      else { input.type = "password"; icon.className = "fa-solid fa-eye text-sm"; }
+    }
+
+    function handleAuthSubmit() {
+      const username = document.getElementById("authUsername").value.trim().toLowerCase();
+      const password = document.getElementById("authPassword").value;
+      const confirmPassword = document.getElementById("authConfirmPassword").value;
+      const rememberMe = document.getElementById("rememberMe").checked;
+      if (!username || !password) { showToast("Preencha todos os campos!", true); return; }
+      let usersDB = JSON.parse(localStorage.getItem("nex_users") || "{}");
+      if (authMode === 'register') {
+        if (usersDB[username]) { showToast("Nick já em uso!", true); return; }
+        if (password !== confirmPassword) { showToast("Senhas não coincidem!", true); return; }
+        usersDB[username] = { password: btoa(password) };
+        localStorage.setItem("nex_users", JSON.stringify(usersDB));
+        currentUser = username;
+        if (rememberMe) localStorage.setItem("nex_current_user", username);
+        sessionStorage.setItem("nex_current_user", username);
+        showToast("Conta criada!"); initApp(); return;
+      }
+      if (!usersDB[username] || usersDB[username].password !== btoa(password)) { showToast("Usuário ou senha incorretos!", true); return; }
+      currentUser = username;
+      if (rememberMe) localStorage.setItem("nex_current_user", username);
+      sessionStorage.setItem("nex_current_user", username);
+      initApp();
+    }
+
+    function checkExistingSession() {
+      const savedUser = localStorage.getItem("nex_current_user") || sessionStorage.getItem("nex_current_user");
+      if (savedUser) { currentUser = savedUser; initApp(); }
+    }
+
+    function initApp() {
+      authScreen.classList.add("hidden"); appContainer.classList.remove("hidden");
+      document.getElementById("currentUserDisplay").innerText = currentUser;
+      document.getElementById("userAvatarLetter").innerText = currentUser.charAt(0).toUpperCase();
+      loadUserData(); renderHistory(); showToast(`Bem-vindo, ${currentUser}!`);
+    }
+
+    function loadUserData() { chatHistory = (JSON.parse(localStorage.getItem("nex_chats_db") || "{}"))[currentUser] || []; }
+    function saveUserData() {
+      if (!currentUser) return;
+      const allData = JSON.parse(localStorage.getItem("nex_chats_db") || "{}");
+      allData[currentUser] = chatHistory;
+      localStorage.setItem("nex_chats_db", JSON.stringify(allData));
+    }
+
+    function confirmLogout() {
+      openConfirmModal("Sair da Conta", "Tem certeza que deseja sair?", () => {
+        localStorage.removeItem("nex_current_user"); sessionStorage.removeItem("nex_current_user"); location.reload();
+      });
+    }
+    function openConfirmModal(title, desc, callback) {
+      document.getElementById("confirmTitle").innerText = title;
+      document.getElementById("confirmDesc").innerText = desc;
+      pendingAction = callback;
+      document.getElementById("confirmModal").classList.remove("hidden");
+    }
+    function closeConfirmModal() { pendingAction = null; document.getElementById("confirmModal").classList.add("hidden"); }
+    document.getElementById("confirmYesBtn").onclick = () => { if (pendingAction) pendingAction(); closeConfirmModal(); };
+
+    function renderHistory() {
+      historyList.innerHTML = "";
+      if (chatHistory.length === 0) { historyList.innerHTML = `<p class="text-[11px] text-zinc-600 px-1 py-1">Nenhuma conversa salva.</p>`; return; }
+      chatHistory.forEach((chat, idx) => {
+        const wrapper = document.createElement("div");
+        const isActive = currentChatIndex === idx;
+        wrapper.className = `flex items-center justify-between p-2 rounded-xl text-xs w-full transition-colors group ${isActive ? 'bg-zinc-800/80 text-zinc-100 font-medium' : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60'}`;
+        wrapper.innerHTML = `<button onclick="loadChat(${idx})" class="flex items-center gap-2 truncate flex-1 text-left"><i class="fa-regular fa-message text-[11px] text-purpleBrand-400"></i><span class="truncate">${chat.title}</span></button><button onclick="event.stopPropagation(); promptDeleteChat(${idx})" class="opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-red-400 p-1 transition-opacity"><i class="fa-solid fa-trash-can text-[11px]"></i></button>`;
+        historyList.appendChild(wrapper);
+      });
+    }
+
+    function promptDeleteChat(idx) {
+      openConfirmModal("Excluir Conversa", `Apagar "${chatHistory[idx].title}"?`, () => {
+        chatHistory.splice(idx, 1); saveUserData();
+        if (currentChatIndex === idx) newChat(); else if (currentChatIndex > idx) currentChatIndex--;
+        renderHistory(); showToast("Conversa excluída.");
+      });
+    }
+
+    function newChat() {
+      if (typeof closeMobileSidebar === "function") closeMobileSidebar();
+      currentChatIndex = null; lastImagePrompt = ""; longPastes = []; renderLongPasteChips();
+      messages = [{ role: "system", content: SYSTEM_PROMPT }];
+      renderWelcomeScreen(); renderHistory(); showToast("Nova conversa!");
+    }
+
+    function renderWelcomeScreen() {
+      chatBox.innerHTML = `<div id="welcomeScreen" class="h-full flex flex-col items-center justify-center text-center my-auto py-10"><div class="w-14 h-14 rounded-2xl btn-gradient flex items-center justify-center text-white p-3.5 mb-4 shadow-xl shadow-purpleBrand-500/30">${lightningSvg}</div><h2 class="font-bold text-lg md:text-xl text-zinc-100">Bem-vindo ao NexDigital IA</h2><p class="text-xs text-zinc-400 max-w-md mt-1.5 leading-relaxed">Sua assistente inteligente de engenharia e criação visual avançada.<br>Escolha uma sugestão ou digite abaixo para começar.</p><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-lg w-full mt-7"><button onclick="quickPrompt('Crie uma imagem realista de um lindo cachorro peludo correndo feliz na beira do mar num pôr do sol cinematográfico')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">🎨 Criar Imagem: Cachorro na Praia</button><button onclick="quickPrompt('Crie um LocalScript de Roblox em Lua com UI bonita, botão de Fly e slider de velocidade, completo e funcional')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Script Roblox: Fly UI com Slider</button><button onclick="quickPrompt('Explique async/await em JavaScript com exemplos avançados')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Explique async/await em JavaScript</button><button onclick="quickPrompt('Como criar uma API REST completa e robusta em Python com Flask')" class="bg-[#0b0b10] border border-zinc-800/60 hover:border-purpleBrand-500/50 p-3 rounded-xl text-left text-xs text-zinc-300 hover:text-zinc-100 transition-all">Como criar uma API REST em Python</button></div></div>`;
+    }
+
+    function loadChat(idx) {
+      currentChatIndex = idx;
+      const chat = chatHistory[idx];
+      messages = JSON.parse(JSON.stringify(chat.messages));
+      const lastImgMsg = [...messages].reverse().find(m => m.generatedImageUrl);
+      lastImagePrompt = lastImgMsg ? lastImgMsg.content : "";
+      chatBox.innerHTML = "";
+      messages.forEach(msg => { if (msg.role !== "system") appendMessageUI(msg.role, msg.content, msg.images || [], msg.generatedImageUrl); });
+      renderHistory();
+      if (window.innerWidth < 768) toggleMobileSidebar();
+    }
+
+    function saveCurrentChat() {
+      if (currentChatIndex === null) {
+        const firstUserMsg = messages.find(m => m.role === 'user');
+        chatHistory.unshift({ title: (firstUserMsg ? firstUserMsg.content : "Nova Conversa").slice(0, 26), messages: JSON.parse(JSON.stringify(messages)) });
+        currentChatIndex = 0;
+      } else chatHistory[currentChatIndex].messages = JSON.parse(JSON.stringify(messages));
+      saveUserData(); renderHistory();
+    }
+
+    window.addEventListener('click', (e) => {
+      const clipBtn = e.target.closest('button[onclick*="toggleAttachMenu"]');
+      if (!clipBtn && !attachMenu.contains(e.target)) attachMenu.classList.add('hidden');
+    });
+    function toggleAttachMenu(e) { e.stopPropagation(); attachMenu.classList.toggle('hidden'); }
+    function triggerFileSelect() { attachMenu.classList.add('hidden'); document.getElementById('fileInput').click(); }
+    function triggerCameraSelect() { attachMenu.classList.add('hidden'); document.getElementById('cameraInput').click(); }
+    
+    function openApiKeyModal() {
+      const m = document.getElementById("apiKeyModal");
+      const inp = document.getElementById("apiKeyInput");
+      const st = document.getElementById("apiKeyStatus");
+      inp.value = getGeminiKey();
+      st.textContent = getGeminiKey() ? "Key salva neste navegador ✓" : "Nenhuma key salva";
+      m.classList.remove("hidden");
+      m.classList.add("flex");
+      setTimeout(() => inp.focus(), 100);
+    }
+    function closeApiKeyModal() {
+      const m = document.getElementById("apiKeyModal");
+      m.classList.add("hidden");
+      m.classList.remove("flex");
+    }
+    function saveApiKeyFromModal() {
+      const inp = document.getElementById("apiKeyInput");
+      const st = document.getElementById("apiKeyStatus");
+      const k = (inp.value || "").trim();
+      if (!k) {
+        st.textContent = "Cole uma key válida.";
+        st.className = "text-[11px] text-red-400 mt-3";
+        return;
+      }
+      saveGeminiKey(k);
+      st.textContent = "Key salva com sucesso ✓";
+      st.className = "text-[11px] text-emerald-400 mt-3";
+      setTimeout(closeApiKeyModal, 800);
+    }
+
+    function closeMobileSidebar() {
+      const sb = document.getElementById("sidebar");
+      const bd = document.getElementById("sidebarBackdrop");
+      if (!sb) return;
+      sb.classList.remove("mobile-open");
+      sb.classList.add("hidden");
+      sb.classList.remove("flex");
+      // restaura classes desktop
+      sb.className = "w-72 border-r border-zinc-800/30 bg-[#060608]/90 backdrop-blur-md p-4 hidden md:flex flex-col justify-between flex-shrink-0 z-30";
+      if (bd) bd.classList.remove("show");
+    }
+    function toggleMobileSidebar() {
+      const sb = document.getElementById("sidebar");
+      const bd = document.getElementById("sidebarBackdrop");
+      if (!sb) return;
+      const isOpen = sb.classList.contains("mobile-open");
+      if (isOpen) {
+        closeMobileSidebar();
+      } else {
+        sb.classList.remove("hidden");
+        sb.classList.add("mobile-open", "flex", "flex-col", "justify-between");
+        if (bd) bd.classList.add("show");
+      }
+    }
+    // Fecha sidebar ao clicar em item no mobile
+    document.addEventListener("click", (e) => {
+      if (window.innerWidth >= 768) return;
+      const sb = document.getElementById("sidebar");
+      if (!sb || !sb.classList.contains("mobile-open")) return;
+      if (e.target.closest("#sidebar button") || e.target.closest("#sidebar .chat-item")) {
+        setTimeout(closeMobileSidebar, 150);
+      }
+    });
+    // Resize: se voltar pra desktop, limpa estado mobile
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 768) closeMobileSidebar();
+    });
+
+    marked.setOptions({
+      highlight: (code, lang) => { if (lang && hljs.getLanguage(lang)) return hljs.highlight(code, { language: lang }).value; return hljs.highlightAuto(code).value; },
+      breaks: true
+    });
+
+    userInput.addEventListener("input", function() { this.style.height = "auto"; this.style.height = Math.min(this.scrollHeight, 128) + "px"; });
+    userInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    userInput.addEventListener("paste", async (e) => {
+      const items = e.clipboardData?.items; if (!items) return;
+      let hasImage = false;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          hasImage = true; e.preventDefault();
+          const blob = items[i].getAsFile(); if (!blob) continue;
+          const reader = new FileReader();
+          reader.onload = (ev) => { selectedImages.push(ev.target.result); renderImagePreviews(); showToast("Imagem colada!"); };
+          reader.readAsDataURL(blob);
+        }
+      }
+      if (!hasImage) {
+        const pastedText = e.clipboardData.getData("text");
+        if (pastedText && pastedText.length > 1000) {
+          e.preventDefault();
+          if (longPastes.length >= 6) { showToast("Máximo 6 arquivos!", true); return; }
+          longPastes.push(pastedText); renderLongPasteChips();
+          userInput.value = ""; userInput.style.height = "auto";
+          showToast("Texto longo → arquivo");
+        }
+      }
+    });
+
+    function renderLongPasteChips() {
+      if (longPastes.length === 0) { longPasteContainer.classList.add("hidden"); longPasteContainer.innerHTML = ""; return; }
+      longPasteContainer.classList.remove("hidden");
+      longPasteContainer.innerHTML = longPastes.map((txt, i) => {
+        const sizeKB = (new Blob([txt]).size / 1024).toFixed(1);
+        return `<div class="long-paste-chip" onclick="openLongTextModal(${i})"><i class="fa-solid fa-file-lines text-purpleBrand-400 text-[11px]"></i><span class="truncate text-zinc-200">arquivo${i+1}.txt</span><span class="text-zinc-500 text-[10px]">${sizeKB}k</span><button onclick="event.stopPropagation(); removeLongPaste(${i})" class="w-4 h-4 rounded hover:bg-red-500/20 text-zinc-500 hover:text-red-400 flex items-center justify-center"><i class="fa-solid fa-xmark text-[9px]"></i></button></div>`;
+      }).join("");
+    }
+    function removeLongPaste(idx) { longPastes.splice(idx, 1); renderLongPasteChips(); }
+    function openLongTextModal(idx) {
+      if (idx < 0 || idx >= longPastes.length) return;
+      document.getElementById("longTextModalTitle").textContent = `arquivo${idx+1}.txt`;
+      document.getElementById("longTextModalContent").textContent = longPastes[idx];
+      document.getElementById("longTextModal").classList.remove("hidden");
+    }
+    function closeLongTextModal() { document.getElementById("longTextModal").classList.add("hidden"); }
+
+    function showToast(message, isError = false) {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      const iconHTML = isError ? `<i class="fa-solid fa-circle-xmark text-red-500 text-sm"></i>` : `<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>`;
+      toast.className = "pointer-events-auto flex items-center gap-2.5 bg-[#121218] border border-zinc-800 text-zinc-200 px-3.5 py-2.5 rounded-xl shadow-2xl backdrop-blur-md transform transition-all duration-300 translate-y-2 opacity-0 text-xs font-medium";
+      toast.innerHTML = `${iconHTML} <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
+      setTimeout(() => { toast.classList.add("opacity-0", "translate-y-2"); setTimeout(() => toast.remove(), 300); }, 2500);
+    }
+
+    function handleFileSelect(event) {
+      Array.from(event.target.files).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = (e) => { selectedImages.push(e.target.result); renderImagePreviews(); };
+        reader.readAsDataURL(file);
+      });
+      event.target.value = "";
+    }
+    function renderImagePreviews() {
+      imagePreviewContainer.innerHTML = "";
+      if (selectedImages.length === 0) { imagePreviewContainer.classList.add("hidden"); return; }
+      imagePreviewContainer.classList.remove("hidden");
+      selectedImages.forEach((imgData, index) => {
+        const div = document.createElement("div");
+        div.className = "relative group w-12 h-12 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900";
+        div.innerHTML = `<img src="${imgData}" onclick="openImageModal('${imgData}')" class="w-full h-full object-cover cursor-pointer"><button onclick="removeImage(${index})" class="absolute top-0.5 right-0.5 bg-black/80 hover:bg-red-600 text-white w-3.5 h-3.5 rounded-full flex items-center justify-center text-[7px]"><i class="fa-solid fa-xmark"></i></button>`;
+        imagePreviewContainer.appendChild(div);
+      });
+    }
+    function removeImage(index) { selectedImages.splice(index, 1); renderImagePreviews(); }
+
+    function openImageModal(src) {
+      document.getElementById("modalImage").src = src;
+      document.getElementById("imageModal").classList.remove("hidden");
+      const copyBtn = document.getElementById("modalCopyBtn");
+      copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> <span id="modalCopyBtnText">Copiar imagem</span>';
+      copyBtn.classList.remove("bg-emerald-600", "border-emerald-500");
+      copyBtn.classList.add("bg-zinc-800", "border-zinc-700/50");
+      document.getElementById("modalDownloadBtn").onclick = async () => {
+        try {
+          const response = await fetch(src); const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob); const a = document.createElement("a");
+          a.href = blobUrl; a.download = "nexdigital-imagem.png";
+          document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(blobUrl);
+          showToast("Imagem salva!");
+        } catch (e) { showToast("Erro ao baixar.", true); }
+      };
+      copyBtn.onclick = async () => {
+        try {
+          const response = await fetch(src); const blob = await response.blob();
+          const pngBlob = new Blob([blob], { type: 'image/png' });
+          await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+          // Só muda o ícone para check verde (não deixa o botão todo verde)
+          copyBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> <span id="modalCopyBtnText">Copiado!</span>';
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> <span id="modalCopyBtnText">Copiar imagem</span>';
+          }, 2200);
+        } catch (e) {
+          copyBtn.innerHTML = '<i class="fa-solid fa-xmark text-red-400"></i> <span id="modalCopyBtnText">Falha</span>';
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> <span id="modalCopyBtnText">Copiar imagem</span>';
+          }, 2000);
+        }
+      };
+    }
+    function closeImageModal() { document.getElementById("imageModal").classList.add("hidden"); }
+    function quickPrompt(text) { userInput.value = text; sendMessage(); }
+
+    function processCodeBlocks(container) {
+      container.querySelectorAll("pre").forEach((pre) => {
+        if (pre.parentNode.classList.contains('code-block-wrapper')) return;
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block-wrapper";
+        pre.parentNode.insertBefore(wrapper, pre);
+
+        const header = document.createElement("div");
+        header.className = "code-header";
+
+        const copyBtn = document.createElement("button");
+        copyBtn.className = "code-btn";
+        copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copiar`;
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(pre.innerText).then(() => {
+            copyBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copiado!`;
+            setTimeout(() => { copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copiar`; }, 2000);
+          });
+        };
+
+        const downloadBtn = document.createElement("button");
+        downloadBtn.className = "code-btn";
+        downloadBtn.innerHTML = `<i class="fa-solid fa-download"></i> Baixar`;
+        downloadBtn.onclick = () => {
+          let filename = "script.txt";
+          const codeContent = pre.innerText, lower = codeContent.toLowerCase();
+          const langEl = pre.querySelector("code");
+          const lang = langEl ? (langEl.className || "") : "";
+          if (lower.includes("localplayer") || lower.includes("workspace") || lower.includes("game:getservice") || lower.includes("game:service") || lang.includes("lua")) filename = "roblox_script.txt";
+          else if (lower.includes("<!doctype html>") || lower.includes("<html")) filename = "index.html";
+          else if (lower.includes("body {") || lower.includes("color:") || lang.includes("css")) filename = "style.css";
+          else if (lang.includes("python") || lower.includes("def ") || lower.includes("import flask")) filename = "main.py";
+          else if (lang.includes("javascript") || lang.includes("language-js") || (lower.includes("function") && lower.includes("const "))) filename = "script.js";
+          const blob = new Blob([codeContent], { type: "text/plain;charset=utf-8" });
+          const url = URL.createObjectURL(blob); const a = document.createElement("a");
+          a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+          showToast(`${filename} baixado!`);
+        };
+
+        header.appendChild(copyBtn); header.appendChild(downloadBtn);
+        wrapper.appendChild(header); wrapper.appendChild(pre);
+      });
+    }
+
+    function appendMessageUI(role, text, imgs = [], generatedImageUrl = null) {
+      const welcome = document.getElementById("welcomeScreen"); if (welcome) welcome.remove();
+      const isUser = role === "user";
+      const div = document.createElement("div");
+      div.className = isUser ? "flex flex-col items-end w-full" : "flex w-full";
+      const htmlContent = marked.parse(text || "");
+      let imageHTML = "";
+      if (imgs && imgs.length > 0) {
+        imageHTML = `<div class="flex flex-wrap gap-1.5 mb-1.5 ${isUser ? 'justify-end' : ''}">` + imgs.map(img => `<img src="${img}" onclick="openImageModal('${img}')" class="w-12 h-12 object-cover rounded-lg border border-zinc-800 cursor-pointer">`).join('') + `</div>`;
+      }
+      let generatedImgHTML = "";
+      if (generatedImageUrl) {
+        generatedImgHTML = `<div class="mt-2 relative group rounded-xl overflow-hidden border border-zinc-800 bg-[#06060a] max-w-sm"><img src="${generatedImageUrl}" onclick="openImageModal('${generatedImageUrl}')" class="w-full h-auto object-cover cursor-pointer"></div>`;
+      }
+      const isLong = isUser && (text || "").length >= 300;
+      const contentId = "msg-" + Date.now() + Math.random().toString(36).slice(2, 6);
+
+      if (isUser) {
+        div.innerHTML = `<div class="user-bubble"><div class="user-meta"><span class="user-name">${currentUser}</span><div class="user-avatar"><i class="fa-solid fa-user"></i></div></div>${imageHTML}<div class="msg-content-wrapper"><div id="${contentId}" class="prose prose-invert max-w-none text-zinc-200 ${isLong ? 'msg-content-collapsed' : ''}">${htmlContent}</div>${isLong ? `<button class="msg-expand-btn" onclick="toggleExpand('${contentId}', this)"><i class="fa-solid fa-chevron-down text-[8px]"></i> Ver mais</button>` : ''}</div></div>`;
+      } else {
+        div.innerHTML = `<div class="assistant-bubble"><div class="ai-avatar btn-gradient flex items-center justify-center text-white p-1.5 shadow-md shadow-purpleBrand-500/20">${lightningSvg}</div><div class="content-col"><p class="font-semibold text-xs mb-1.5 text-purpleBrand-400 leading-none">NexDigital IA</p>${imageHTML}<div class="prose prose-invert max-w-none text-zinc-200">${htmlContent}</div>${generatedImgHTML}</div></div>`;
+      }
+      chatBox.appendChild(div); processCodeBlocks(div); chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function toggleExpand(contentId, btn) {
+      const el = document.getElementById(contentId); if (!el) return;
+      if (el.classList.contains("msg-content-collapsed")) { el.classList.remove("msg-content-collapsed"); btn.innerHTML = `<i class="fa-solid fa-chevron-up text-[8px]"></i> Ver menos`; }
+      else { el.classList.add("msg-content-collapsed"); btn.innerHTML = `<i class="fa-solid fa-chevron-down text-[8px]"></i> Ver mais`; }
+    }
+
+    function isImageGenerationPrompt(text) {
+      const lower = (text || "").toLowerCase();
+      const createWords = ["crie","criar","gerar","gere","desenhe","faça","faca","quero","mostre","ilustre","gera","faz"];
+      const imageNouns = ["imagem","foto","desenho","arte","ilustração","ilustracao","cena","cenas","picture","image"];
+      const hasCreateAndImage = createWords.some(w => lower.includes(w)) && imageNouns.some(n => lower.includes(n));
+      const isModification = lastImagePrompt && (lower.includes("mais")||lower.includes("mude")||lower.includes("deixe")||lower.includes("coloque")||lower.includes("retire")||lower.includes("altere")||lower.includes("sem")||lower.includes("realista")||lower.includes("adicione")||lower.includes("remova")||lower.includes("troque")||lower.includes("muda"));
+      return hasCreateAndImage || isModification;
+    }
+
+    function getTrimmedMessagesForAPI() {
+      const system = messages.filter(m => m.role === "system");
+      const rest = messages.filter(m => m.role !== "system");
+      // Gemini free tier é bem mais generoso — últimas 12 msgs
+      return [...system, ...rest.slice(-12)].map(m => ({ role: m.role, content: m.content }));
+    }
+
+    async function sendMessage() {
+      let text = userInput.value.trim();
+      if (longPastes.length > 0) {
+        const joined = longPastes.map((t, i) => `--- arquivo${i+1}.txt ---\n${t}`).join("\n\n");
+        text = text ? (text + "\n\n" + joined) : joined;
+        longPastes = []; renderLongPasteChips();
+      }
+      if (!text && selectedImages.length === 0) return;
+      const currentImgs = [...selectedImages];
+      appendMessageUI("user", text || "Anexo enviado.", currentImgs);
+      let userPrompt = text;
+      if (currentImgs.length > 0) userPrompt += `\n\n[O usuário anexou ${currentImgs.length} imagem(ns)]`;
+      messages.push({ role: "user", content: userPrompt, images: currentImgs });
+      userInput.value = ""; userInput.style.height = "auto"; selectedImages = []; renderImagePreviews();
+
+      if (isImageGenerationPrompt(text)) {
+        let finalImagePrompt = text;
+        if (lastImagePrompt && !/(crie|criar|gerar|gere|desenhe|faça|faca)\s+(uma\s+)?(imagem|foto|desenho|arte)/i.test(text)) {
+          finalImagePrompt = `${lastImagePrompt}, with the following changes: ${text}`;
+        }
+        const realisticPrompt = `${finalImagePrompt}, photorealistic, highly detailed, perfect anatomy, correct proportions, realistic fur texture, natural pose, sharp focus, professional photography, natural cinematic lighting, 8k uhd, masterpiece, best quality`;
+        lastImagePrompt = finalImagePrompt;
+        const loadingCardId = "loadingImageCard_" + Date.now();
+        const loadingDiv = document.createElement("div");
+        loadingDiv.id = loadingCardId; loadingDiv.className = "flex w-full";
+        loadingDiv.innerHTML = `<div class="assistant-bubble"><div class="w-7 h-7 rounded-lg btn-gradient flex items-center justify-center text-white p-1.5 flex-shrink-0">${lightningSvg}</div><div class="content-col"><p class="font-semibold text-xs mb-1.5 text-purpleBrand-400 leading-none">NexDigital IA</p><p class="text-xs text-zinc-400 mb-2">Renderizando imagem...</p><div class="image-loading-card w-full h-40 rounded-xl border border-purpleBrand-500/25 relative flex items-center justify-center overflow-hidden"><div class="absolute top-2.5 right-2.5 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-semibold text-purpleBrand-300 flex items-center gap-1.5"><span>Gerando</span><span class="w-1.5 h-1.5 bg-purpleBrand-400 rounded-full dot-1"></span><span class="w-1.5 h-1.5 bg-purpleBrand-400 rounded-full dot-2"></span><span class="w-1.5 h-1.5 bg-purpleBrand-400 rounded-full dot-3"></span></div><i class="fa-solid fa-wand-magic-sparkles text-xl text-purpleBrand-400 animate-pulse"></i></div></div></div>`;
+        chatBox.appendChild(loadingDiv); chatBox.scrollTop = chatBox.scrollHeight;
+        const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(realisticPrompt)}?width=1024&height=1024&nologo=true&enhance=true&seed=${Math.floor(Math.random()*1000000)}`;
+        const imgTest = new Image(); imgTest.crossOrigin = "anonymous"; imgTest.src = imageUrl;
+        imgTest.onload = () => {
+          const loadElem = document.getElementById(loadingCardId); if (loadElem) loadElem.remove();
+          appendMessageUI("assistant", "Pronto! Aqui está a imagem:", [], imageUrl);
+          messages.push({ role: "assistant", content: "Pronto! Aqui está a imagem:", generatedImageUrl: imageUrl });
+          saveCurrentChat();
+        };
+        imgTest.onerror = () => {
+          const loadElem = document.getElementById(loadingCardId); if (loadElem) loadElem.remove();
+          appendMessageUI("assistant", "❌ Erro ao gerar a imagem. Tente outro prompt.");
+        };
+        return;
+      }
+
+      const loadingDiv = document.createElement("div");
+      loadingDiv.id = "loadingDiv"; loadingDiv.className = "flex w-full";
+      const loadStatus = (() => {
+        const t = (text || "").toLowerCase();
+        if (/\b(imagem|image|foto|desenha|gere uma imagem|gera uma imagem|criar imagem|crie uma imagem|generate image)\b/i.test(t)) return "Gerando imagem...";
+        if (/\b(script|c[oó]digo|lua|roblox|localscript|programa|html|css|python|javascript|painel|admin|fly|gui|fun[cç][aã]o)\b/i.test(t)) return "Escrevendo código...";
+        if (/^(oi+|ol[aá]|hey|eae|e a[ií]|bom dia|boa tarde|boa noite|hello|hi|salve|fala)\b/i.test(t.trim())) return "Respondendo...";
+        if (/\b(explica|como|o que|porque|por que|ajuda|help)\b/i.test(t)) return "Pensando na resposta...";
+        return "Pensando...";
+      })();
+      loadingDiv.innerHTML = `<div class="assistant-bubble"><div class="w-7 h-7 rounded-lg btn-gradient flex items-center justify-center text-white p-1.5 flex-shrink-0">${lightningSvg}</div><span class="text-xs text-zinc-500 self-center flex items-center gap-2"><i class="fa-solid fa-circle-notch animate-spin text-purpleBrand-400"></i> ${loadStatus}</span></div>`;
+      chatBox.appendChild(loadingDiv); chatBox.scrollTop = chatBox.scrollHeight;
+
+      try {
+        const apiMsgs = getTrimmedMessagesForAPI();
+
+        // Converte mensagens OpenAI → formato nativo Gemini
+        let systemText = "";
+        const contents = [];
+        for (const m of apiMsgs) {
+          if (m.role === "system") {
+            systemText += (m.content || "") + "\n";
+          } else if (m.role === "user") {
+            contents.push({ role: "user", parts: [{ text: m.content || "" }] });
+          } else if (m.role === "assistant") {
+            contents.push({ role: "model", parts: [{ text: m.content || "" }] });
+          }
+        }
+        if (!contents.length) {
+          contents.push({ role: "user", parts: [{ text: text || "Olá" }] });
+        }
+
+        const model = modelSelect.value || "gemini-3.6-flash";
+        const apiKey = getGeminiKey();
+        if (!apiKey) {
+          const loadElem = document.getElementById("loadingDiv");
+          if (loadElem) loadElem.remove();
+          appendMessageUI("assistant", "❌ **Sem API key.** Clique em **🤖 Ativar IA** no canto superior direito e cole sua key do [Google AI Studio](https://aistudio.google.com/apikey).");
+          return;
+        }
+
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+        const body = {
+          contents,
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 8192
+          }
+        };
+        if (systemText.trim()) {
+          body.systemInstruction = { parts: [{ text: systemText.trim() }] };
+        }
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": apiKey
+          },
+          body: JSON.stringify(body)
+        });
+        const data = await response.json();
+        const loadElem = document.getElementById("loadingDiv");
+        if (loadElem) loadElem.remove();
+
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+          const parts = data.candidates[0].content.parts || [];
+          const reply = parts.map(p => p.text || "").join("");
+          messages.push({ role: "assistant", content: reply });
+          appendMessageUI("assistant", reply);
+          saveCurrentChat();
+        } else if (data.error) {
+          const errMsg = data.error.message || JSON.stringify(data.error);
+          appendMessageUI("assistant", "❌ **Erro:** " + errMsg);
+        } else {
+          appendMessageUI("assistant", "❌ **Erro:** resposta vazia da API. " + JSON.stringify(data).slice(0, 300));
+        }
+      } catch (err) {
+        const loadElem = document.getElementById("loadingDiv"); if (loadElem) loadElem.remove();
+        appendMessageUI("assistant", "❌ **Erro de Rede:** " + err.message);
+      }
+    }
+
+    checkExistingSession();
+  </script>
+
+  <!-- API Key Settings Modal -->
+  <div id="apiKeyModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/70 backdrop-blur-sm p-4" onclick="if(event.target===this)closeApiKeyModal()">
+    <div class="bg-[#0c0c10] border border-zinc-800 rounded-2xl p-5 w-full max-w-md shadow-2xl max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-semibold text-zinc-100 flex items-center gap-2"><span>🤖</span> Ativar IA</h3>
+        <button onclick="closeApiKeyModal()" class="w-9 h-9 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-3.5 mb-4">
+        <p class="text-[11px] font-semibold text-purpleBrand-400 mb-2.5 uppercase tracking-wide">Como pegar sua API Key (grátis)</p>
+        <ol class="text-xs text-zinc-300 space-y-2 leading-relaxed list-decimal list-inside">
+          <li>Acesse <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener" class="text-purpleBrand-400 underline hover:text-purpleBrand-300">aistudio.google.com/apikey</a></li>
+          <li>Faça login com sua conta Google</li>
+          <li>Clique em <strong class="text-zinc-100">Create API key</strong> (ou “Criar chave de API”)</li>
+          <li>Escolha um projeto (ou crie um novo) e confirme</li>
+          <li>Copie a chave gerada e cole no campo abaixo</li>
+        </ol>
+        <p class="text-[10px] text-zinc-500 mt-3 leading-relaxed">A key fica salva <strong class="text-zinc-400">só neste navegador</strong>. Não compartilhe com ninguém.</p>
+      </div>
+
+      <label class="block text-[11px] font-medium text-zinc-400 mb-1.5">Sua API Key</label>
+      <input id="apiKeyInput" type="password" placeholder="Cole sua API key aqui..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2.5 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-purpleBrand-500 mb-3">
+      <div class="flex gap-2">
+        <button onclick="saveApiKeyFromModal()" class="flex-1 btn-gradient text-white text-sm font-medium py-2.5 rounded-xl">Salvar e ativar</button>
+        <button onclick="document.getElementById('apiKeyInput').type = document.getElementById('apiKeyInput').type==='password'?'text':'password'" class="px-3 rounded-xl border border-zinc-700 text-zinc-400 text-xs hover:text-white">Ver</button>
+      </div>
+      <p id="apiKeyStatus" class="text-[11px] text-zinc-500 mt-3"></p>
+    </div>
+  </div>
+
+</body>
+</html>
